@@ -14,6 +14,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.bullets_ready = True
         self.bullets_time = 0
         self.bullet_recharge = 300  # Перезарядка
+        self.bullet_music = pygame.mixer.Sound('music/bullet_music.mp3')
 
     def user_input(self):
         keys = pygame.key.get_pressed()
@@ -29,6 +30,7 @@ class Spaceship(pygame.sprite.Sprite):
             bullet = Bullet(self.rect.center, 5, self.screen_height)
             self.bullets_group.add(bullet)
             self.bullets_time = pygame.time.get_ticks()
+            self.bullet_music.play()
 
     def update(self):
         self.user_input()

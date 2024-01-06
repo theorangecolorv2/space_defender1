@@ -22,18 +22,16 @@ clock = pygame.time.Clock()
 my_font = pygame.font.SysFont('Algerian', 30)
 scores = my_font.render('SCORE', False, (0, 227, 160))
 
+record = my_font.render('RECORD', False, (0, 227, 160))
+
 game = Game(screen_width, screen_height)
-
-score_point = my_font.render(str(game.score), False, (0, 227, 160))
-print(game.score)
-
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    if random.randint(1, 100) == 1 and game.run:
+    if random.randint(1, 50) == 1 and game.run:
         new_asteroid = Asteroid(screen_width, screen_height)
         game.asteroids_group.add(new_asteroid)
 
@@ -59,7 +57,10 @@ while True:
 
     screen.blit(scores, (25, 25))
     score_point = my_font.render(str(game.score), False, (0, 227, 160))
+    record_points = my_font.render(str(game.records), False, (0, 227, 160))
     screen.blit(score_point, (50, 55, 50, 50))
+    screen.blit(record, (687, 55, 50, 50))
+    screen.blit(record_points, (745, 91, 0, 0))
     game.spaceship_group.draw(screen)
     game.spaceship_group.sprite.bullets_group.draw(screen)
     game.asteroids_group.draw(screen)
