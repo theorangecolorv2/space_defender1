@@ -47,3 +47,7 @@ class Spaceship(pygame.sprite.Sprite):
             time = pygame.time.get_ticks()
             if time - self.bullets_time >= self.bullet_recharge:
                 self.bullets_ready = True
+
+    def reset(self):
+        self.rect = self.image.get_rect(midbottom=(self.screen_width / 2, self.screen_height))
+        self.bullets_group.empty()

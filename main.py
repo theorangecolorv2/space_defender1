@@ -2,53 +2,67 @@ import sys
 import pygame
 import random
 from game import Game
+from asteroid import Asteroid
 
 pygame.init()
+pygame.font.init()
 
-screen_width = 750
-screen_height = 700
+screen_width = 800
+screen_height = 800
 
-image_fons = pygame.image.load('graphics/fons.png')
+image_fons = pygame.image.load('graphics/fon.jpg')
+heart_image = pygame.image.load('graphics/heart1.png')
 
 
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Space Adventure')
+pygame.display.set_caption('Space Defender')
 
 clock = pygame.time.Clock()
 
+my_font = pygame.font.SysFont('Algerian', 30)
+scores = my_font.render('SCORE', False, (0, 227, 160))
+
 game = Game(screen_width, screen_height)
 
-
-class Asteroid(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('graphics/asteroids.png')
-        self.rect = self.image.get_rect()
-        self.rect.x = random.randint(0, screen_width - self.rect.width)
-        self.rect.y = -self.rect.height
-        self.speed = random.randint(2, 5)
-
-    def update(self):
-        self.rect.y += self.speed
+score_point = my_font.render(str(game.score), False, (0, 227, 160))
+print(game.score)
 
 
-asteroids_group = pygame.sprite.Group()
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    if random.randint(1, 100) == 1:
-        new_asteroid = Asteroid()
-        asteroids_group.add(new_asteroid)
+    if random.randint(1, 100) == 1 and game.run:
+        new_asteroid = Asteroid(screen_width, screen_height)
+        game.asteroids_group.add(new_asteroid)
 
-    game.spaceship_group.update()
-    asteroids_group.update()
+    if game.run:
+        game.spaceship_group.update()
+        game.asteroids_group.update()
+        game.check_for_collisions()
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_RETURN] and game.run == False:
+        game.reset()
 
     screen.blit(image_fons, (0, 0))
+    if game.lives == 3:
+        screen.blit(heart_image, (691, 0))
+        screen.blit(heart_image, (725, 0))
+        screen.blit(heart_image, (760, 0))
+    elif game.lives == 2:
+        screen.blit(heart_image, (691, 0))
+        screen.blit(heart_image, (725, 0))
+    elif game.lives == 1:
+        screen.blit(heart_image, (691, 0))
+
+    screen.blit(scores, (25, 25))
+    score_point = my_font.render(str(game.score), False, (0, 227, 160))
+    screen.blit(score_point, (50, 55, 50, 50))
     game.spaceship_group.draw(screen)
     game.spaceship_group.sprite.bullets_group.draw(screen)
-    asteroids_group.draw(screen)
+    game.asteroids_group.draw(screen)
 
     pygame.display.update()
     clock.tick(60)
