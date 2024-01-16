@@ -8,7 +8,6 @@ from menu import Menu
 pygame.init()
 pygame.font.init()
 
-
 screen_width = 800
 screen_height = 800
 
@@ -32,6 +31,7 @@ menu = Menu()
 menu.append_option("Hello, world!", lambda: print("Hello< world!"))
 menu.append_option('Quit', quit)
 menu.append_option("play", game.r)
+menu.append_option(('Рекорд ' + str(game.records)), game.records)
 
 while True:
     for event in pygame.event.get():
@@ -45,13 +45,14 @@ while True:
                 menu.switch(1)
             elif event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
                 menu.select()
-        menu.draw(screen, 100, 100, 75)
-        pygame.display.flip()
 
+        if game.run == False:
+            menu.draw(screen, 100, 100, 75)
+            pygame.display.flip()
 
     if game.run:
         if random.randint(1, 50) == 1 and game.run:
-            new_asteroid = Asteroid(screen_width, screen_height)
+            new_asteroid = Asteroid(screen_width, screen_height, random.randint(0,2))
             game.asteroids_group.add(new_asteroid)
 
         if game.run:
@@ -60,9 +61,6 @@ while True:
             game.check_for_collisions()
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_RETURN] and game.run == False:
-            game.reset()
-
         screen.blit(image_fons, (0, 0))
         if game.lives == 3:
             screen.blit(heart_image, (691, 0))
@@ -73,6 +71,8 @@ while True:
             screen.blit(heart_image, (725, 0))
         elif game.lives == 1:
             screen.blit(heart_image, (691, 0))
+
+
 
         screen.blit(scores, (25, 25))
         score_point = my_font.render(str(game.score), False, (0, 227, 160))

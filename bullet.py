@@ -4,7 +4,7 @@ import pygame
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, position, speed, screen_height):
         super().__init__()
-        self.image = pygame.image.load('graphics/bullet.png')
+        self.image = pygame.image.load('graphics/beam red.png')
         self.rect = self.image.get_rect(center=position)
         self.speed = speed
         self.screen_height = screen_height

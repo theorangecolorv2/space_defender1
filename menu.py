@@ -4,6 +4,7 @@ pygame.init()
 
 ARIAL_50 = pygame.font.SysFont("Arial", 50)
 
+
 class Menu:
     def __init__(self):
         self._option_surfaces = []
@@ -11,7 +12,7 @@ class Menu:
         self._current_option_index = 0
 
     def append_option(self, option, callback):
-        self._option_surfaces.append(ARIAL_50.render(option, True, (255,255,255)))
+        self._option_surfaces.append(ARIAL_50.render(option, True, (255, 255, 255)))
         self._callbacks.append(callback)
 
     def switch(self, direction):
@@ -27,6 +28,5 @@ class Menu:
             if i == self._current_option_index:
                 pygame.draw.rect(surf, (0, 0, 120), option_rect)
             else:
-                pygame.draw.rect(surf, (0,0,0), option_rect)
+                pygame.draw.rect(surf, (0, 0, 0), option_rect)
             surf.blit(option, option_rect)
-

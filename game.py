@@ -3,6 +3,12 @@ from spaceship import Spaceship
 from asteroid import Asteroid
 
 
+import pygame
+from spaceship import Spaceship
+from asteroid import Asteroid
+from menu import Menu
+import random
+
 class Game:
     def __init__(self, screen_width, screen_height):
         self.screen_width = screen_width
@@ -10,11 +16,12 @@ class Game:
         self.spaceship_group = pygame.sprite.GroupSingle()
         self.spaceship_group.add(Spaceship(self.screen_width, self.screen_height))
         self.asteroids_group = pygame.sprite.Group()
-        self.asteroids_group.add(Asteroid(self.screen_width, self.screen_height))
+        self.asteroids_group.add(Asteroid(self.screen_width, self.screen_height, random.randint(0,2)))
         self.lives = 3
         self.run = False
         self.score = 0
         self.records = 0
+        self.menu = Menu()
         self.load_records()
         self.killed_music = pygame.mixer.Sound('music/killed_music.mp3')
         pygame.mixer.music.load('music/music (2).mp3')
@@ -43,9 +50,10 @@ class Game:
                 if pygame.sprite.spritecollide(asteroid, self.spaceship_group, False):
                     self.game_over()
                     self.score = 0
-
     def game_over(self):
         self.run = False
+        self.lives = 3
+        self.asteroids_group.empty()
 
     def reset(self):
         self.run = True
@@ -69,4 +77,3 @@ class Game:
 
     def r(self):
         self.run = True
-        print("GFDGF")
